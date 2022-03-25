@@ -1,30 +1,27 @@
 package com.cognixia.jump.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 import javax.validation.constraints.NotNull;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Entity
+@Document("users")
 public class User {
 	
 	public static enum Role {
 		ROLE_USER, ROLE_ADMIN // roles need to be capital and start with ROLE_
 	}
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
+	
 	@Schema(description = "ID for User",
 	example = "1", 
 	required = true)
-	@Column(name="user_id")
-	private Integer userID;
+	@Id
+	private String userID;
 	
 	@Schema(description = "first name of user",
 		example="Matthew",
@@ -39,29 +36,29 @@ public class User {
 	@Schema(description = "Accounts username for user",
 			example = "user1", 
 			required = true)
-	@Column(unique = true, nullable = false)
+	
 	@NotNull(message = "userName cannot be null")
 	private String username;
 	
 	@Schema(description = "Accounts password for user",
 			example = "password", 
 			required = true)
-	@Column(nullable = false)
+	
 	@NotNull(message = "Password cannot be null")
 	private String password;
 	
 	@Schema(description = "Role of current user",
 			example = "ROLE_USER", 
 			required = true)
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
 	@NotNull(message = "Role cannot be null")
 	private Role role;
+	
+	private String importrole;
+	
 	
 	@Schema(description = "checks if user is active acount",
 			example = "true", 
 			required = true)
-	@Column(columnDefinition = "boolean default true")
 	private boolean enabled;
 	
 	@Schema(description = "credits of the user",
@@ -73,7 +70,7 @@ public class User {
 		this(null,"N/A", "N/A" ,"N/A", "N/A", Role.ROLE_USER, true, null);
 	}
 
-	public User(Integer userID, String first_name, String last_name,
+	public User(String userID, String first_name, String last_name,
 			@NotNull(message = "userName cannot be null") String username,
 			@NotNull(message = "Password cannot be null") String password,
 			@NotNull(message = "Role cannot be null") Role role, boolean enabled, Integer credit) {
@@ -96,11 +93,11 @@ public class User {
 		this.credit = credit;
 	}
 
-	public Integer getUserID() {
+	public String getUserID() {
 		return userID;
 	}
 
-	public void setUserID(Integer userID) {
+	public void setUserID(String userID) {
 		this.userID = userID;
 	}
 
