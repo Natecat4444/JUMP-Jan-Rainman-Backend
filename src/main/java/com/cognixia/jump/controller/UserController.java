@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ import com.cognixia.jump.model.User;
 import com.cognixia.jump.service.UserService;
 import com.cognixia.jump.util.JwtUtil;
 
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/api")
 @RestController
 public class UserController {
