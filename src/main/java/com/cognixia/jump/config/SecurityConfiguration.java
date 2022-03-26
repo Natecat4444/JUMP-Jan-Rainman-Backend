@@ -1,6 +1,5 @@
 package com.cognixia.jump.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -47,6 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure( HttpSecurity http) throws Exception{
 		
+		http.cors();
+		
 		http.csrf().disable()
 			.authorizeRequests()
 			.antMatchers( HttpMethod.GET, "/v3/api-docs/").permitAll()
@@ -60,6 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		// make sure jwt filter is checked first before any other filter, especially before the filter that checks for the correct
 		// username and password of a user
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		
 	}
 	
 	// mainly used to decode passwords
