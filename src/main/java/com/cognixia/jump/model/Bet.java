@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,7 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class Bet {
 	
 	private static enum Status{
-		WINNER, LOST	}
+		WINNER, LOST, PENDING	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +39,8 @@ public class Bet {
 			example = "34", 
 			required = true)
 	@NotNull(message = "temperature can't be null")
-	@Size(min = -80, max = 135)
+	@Min(value = -80)
+	@Max(value = 135)
 	private Integer temperature;
 	
 	@Schema(description = "forecasted date ",
@@ -56,7 +59,6 @@ public class Bet {
 			example = "1", 
 			required = true)
 	@NotNull(message = "wager can't be null")
-	@Size(min = 1)
 	private Integer wager;
 	
 	@Column(updatable = false)
