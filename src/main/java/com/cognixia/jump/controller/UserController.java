@@ -30,7 +30,7 @@ import com.cognixia.jump.model.User;
 import com.cognixia.jump.service.UserService;
 import com.cognixia.jump.util.JwtUtil;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://jump-java-final-test-bucket.s3-website.us-east-2.amazonaws.com/")
 @RequestMapping("/api")
 @RestController
 public class UserController {
