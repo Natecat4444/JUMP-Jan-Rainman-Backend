@@ -93,6 +93,12 @@ public class UserController {
 		return serv.getLeaderboard();
 	}
 	
+	@GetMapping("/admin/user/{id}")
+	public ResponseEntity<?> getUser(@PathVariable Integer id){
+		User user = serv.findUserByUserID(id);
+		return ResponseEntity.status(200).body(user);
+		
+	}
 	@PostMapping("/users")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user){
 		

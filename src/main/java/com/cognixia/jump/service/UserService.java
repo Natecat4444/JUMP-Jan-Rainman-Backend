@@ -28,6 +28,11 @@ public class UserService {
 		return found.get();
 	}
 	
+	public User findUserByUserID(Integer id) {
+		Optional<User> found = repo.findById(id);
+		return found.get();
+	}
+	
 	public boolean deleteUser(int id) {
 		if (repo.existsById(id)) {
 			repo.deleteById(id);
