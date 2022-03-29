@@ -1,5 +1,6 @@
 package com.cognixia.jump.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -79,6 +80,13 @@ public class UserController {
 	@GetMapping("/users")
 	public List<User> getAll(){
 		return serv.getAllUsers();
+	}
+	
+	@GetMapping("/user")
+	public ResponseEntity<?> getCurrentUser(Principal principle){
+		User user =  serv.findUserByUsername(principle.getName());
+		
+		return ResponseEntity.status(200).body(user);
 	}
 	
 	@PostMapping("/users")
