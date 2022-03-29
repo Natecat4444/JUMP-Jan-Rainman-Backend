@@ -14,6 +14,6 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	
 	public Optional<User> findByUsername(String username);
 	
-	@Query(nativeQuery=true, value="select username, credit from user order by credit DESC LIMIT 10")
+	@Query(nativeQuery=true, value="select * from user order by credit DESC LIMIT 10")
 	public List<User> getLeaderboard();
 }

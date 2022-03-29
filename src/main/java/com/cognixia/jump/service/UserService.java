@@ -39,5 +39,9 @@ public class UserService {
 	public User updateUser(User user) {
 		return repo.save(user);
 	}
+	
+	public List<User> getLeaderboard(){
+		return repo.getLeaderboard();
+	}
 
 }

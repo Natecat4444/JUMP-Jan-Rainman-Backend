@@ -90,7 +90,7 @@ public class UserController {
 	
 	@GetMapping("/user/leaderboard")
 	public List<User> getLeaderboard(){
-		return getLeaderboard();
+		return serv.getLeaderboard();
 	}
 	
 	@PostMapping("/users")
