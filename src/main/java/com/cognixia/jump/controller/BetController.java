@@ -63,6 +63,8 @@ public class BetController {
 			bet.setCreation_date(localdatetime);
 			bet.setUser(user);
 			
+			user.setCredit(user.getCredit()-bet.getWager());
+			
 			Bet created = betserv.createBet(bet);
 			
 			return ResponseEntity.status(201).body(created);
