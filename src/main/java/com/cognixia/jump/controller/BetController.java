@@ -39,6 +39,11 @@ public class BetController {
 		return betserv.findBetByUserId(user.getUserID());
 	}
 	
+	@GetMapping("/admin/bets")
+	public List<Bet> getAllBets(){
+		return betserv.findAllBet();
+	}
+	
 	@GetMapping("/bets/{id}")
 	public ResponseEntity<Bet> findBetById(@Valid @PathVariable int id)throws ResourceNotFoundException{
 
@@ -52,6 +57,18 @@ public class BetController {
 	}
 	
 	
+	@GetMapping("/bets/pending")
+	public List<Bet> getAllPendingBets(Principal principal){
+		User user = userserv.findUserByUsername(principal.getName());
+		return betserv.findPendingBets(user.getUserID());
+	}
+	
+	@GetMapping("/bets/completed")
+	public List<Bet> getAllCompletedBets(Principal principal){
+		User user = userserv.findUserByUsername(principal.getName());
+		return betserv.findCompletedBets(user.getUserID());
+	}
+	
 	@PostMapping("/bets")
 	public ResponseEntity<Bet> createBet(@Valid @RequestBody Bet bet, Principal principal) throws ResourceNotFoundException{
 		
@@ -62,6 +79,8 @@ public class BetController {
 			bet.setBet_id(null);
 			bet.setCreation_date(localdatetime);
 			bet.setUser(user);
+			
+			user.setCredit(user.getCredit()-bet.getWager());
 			
 			Bet created = betserv.createBet(bet);
 			
