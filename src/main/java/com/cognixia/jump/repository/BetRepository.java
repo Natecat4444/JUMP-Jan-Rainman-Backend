@@ -14,4 +14,14 @@ public interface BetRepository extends JpaRepository<Bet, Integer> {
 	@Query("select b from Bet b where user_id = ?1")
 	public List<Bet> findAllByUserId(Integer user_id);
 	
+<<<<<<< HEAD
+=======
+	@Query("select b from Bet b where status in ('WINNER', 'LOST') and user_id = ?1 ")
+	public List<Bet> findAllDoneBetsByUserId(Integer user_id);
+	
+	@Query("select b from Bet b where status = 'PENDING' and user_id = ?1 ")
+	public List<Bet> findAllPendingBetsByUserId(Integer user_id);
+	
+	
+>>>>>>> origin/pasangbranch
 }

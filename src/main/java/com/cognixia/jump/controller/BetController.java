@@ -57,6 +57,18 @@ public class BetController {
 	}
 	
 	
+	@GetMapping("/bets/pending")
+	public List<Bet> getAllPendingBets(Principal principal){
+		User user = userserv.findUserByUsername(principal.getName());
+		return betserv.findPendingBets(user.getUserID());
+	}
+	
+	@GetMapping("/bets/completed")
+	public List<Bet> getAllCompletedBets(Principal principal){
+		User user = userserv.findUserByUsername(principal.getName());
+		return betserv.findCompletedBets(user.getUserID());
+	}
+	
 	@PostMapping("/bets")
 	public ResponseEntity<Bet> createBet(@Valid @RequestBody Bet bet, Principal principal) throws ResourceNotFoundException{
 		
