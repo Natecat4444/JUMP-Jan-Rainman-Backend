@@ -24,9 +24,18 @@ public class CityController {
 		return repo.findAll();
 	}
 	
-	@GetMapping("/city/{id}")
+	@GetMapping("/city/id/{id}")
 	public ResponseEntity<?> getCity(@PathVariable int id){
 		Optional<City> found = repo.findById(id);
+		if(found.isEmpty()) {
+			return ResponseEntity.status(404).body("Not found");
+		}
+		return ResponseEntity.status(200).body(found.get());
+	}
+	
+	@GetMapping("/city/{name}")
+	public ResponseEntity<?> getCityName(@PathVariable String name){
+		Optional<City> found = repo.findByName(name);
 		if(found.isEmpty()) {
 			return ResponseEntity.status(404).body("Not found");
 		}
