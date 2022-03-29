@@ -39,6 +39,11 @@ public class BetController {
 		return betserv.findBetByUserId(user.getUserID());
 	}
 	
+	@GetMapping("/admin/bets")
+	public List<Bet> getAllBets(){
+		return betserv.findAllBet();
+	}
+	
 	@GetMapping("/bets/{id}")
 	public ResponseEntity<Bet> findBetById(@Valid @PathVariable int id)throws ResourceNotFoundException{
 
