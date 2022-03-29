@@ -22,6 +22,14 @@ public class BetService {
 		return betrepo.findAllByUserId(id);
 	}
 	
+	public List<Bet> findCompletedBets(int id){
+		return betrepo.findAllDoneBetsByUserId(id);
+	}
+	
+	public List<Bet> findPendingBets(int id){
+		return betrepo.findAllPendingBetsByUserId(id);
+	}
+	
 	public Bet createBet(Bet bet) {
 		return betrepo.save(bet);
 	}
