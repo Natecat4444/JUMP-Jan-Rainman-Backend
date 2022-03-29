@@ -13,4 +13,5 @@ public interface BetRepository extends JpaRepository<Bet, Integer> {
 
 	@Query("select b from Bet b where user_id = ?1")
 	public List<Bet> findAllByUserId(Integer user_id);
+	
 }

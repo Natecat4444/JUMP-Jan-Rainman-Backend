@@ -84,9 +84,13 @@ public class UserController {
 	
 	@GetMapping("/user")
 	public ResponseEntity<?> getCurrentUser(Principal principle){
-		User user =  serv.findUserByUsername(principle.getName());
-		
+		User user =  serv.findUserByUsername(principle.getName());	
 		return ResponseEntity.status(200).body(user);
+	}
+	
+	@GetMapping("/user/leaderboard")
+	public List<User> getLeaderboard(){
+		return getLeaderboard();
 	}
 	
 	@PostMapping("/users")

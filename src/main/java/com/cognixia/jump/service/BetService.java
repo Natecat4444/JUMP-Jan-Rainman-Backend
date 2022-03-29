@@ -22,7 +22,15 @@ public class BetService {
 		return betrepo.findAllByUserId(id);
 	}
 	
+	public Bet findBetById(int id) {
+		return betrepo.getById(id);
+	}
+	
 	public Bet createBet(Bet bet) {
+		return betrepo.save(bet);
+	}
+	
+	public Bet updateBet(Bet bet) {
 		return betrepo.save(bet);
 	}
 	
