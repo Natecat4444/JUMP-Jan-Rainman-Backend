@@ -77,6 +77,11 @@ public class City {
 	public void setState(String state) {
 		this.state = state;
 	}
+
+	@Override
+	public String toString() {
+		return "City [city_id=" + city_id + ", name=" + name + ", code=" + code + ", state=" + state + "]";
+	}
 	
 	
 	

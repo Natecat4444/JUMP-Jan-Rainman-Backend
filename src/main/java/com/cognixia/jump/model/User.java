@@ -11,6 +11,15 @@ import javax.validation.constraints.NotNull;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+/**
+* The User class is an entity that holds
+* user properties and functionality 
+*
+* @author  Pasang Sherpa
+* @version 1.0
+* @since   2022-03-27
+*/
+
 @Entity
 public class User {
 	
@@ -150,6 +159,13 @@ public class User {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	@Override
+	public String toString() {
+		return "User [userID=" + userID + ", first_name=" + first_name + ", last_name=" + last_name + ", username="
+				+ username + ", password=" + password + ", role=" + role + ", enabled=" + enabled + ", credit=" + credit
+				+ "]";
 	}
 	
 	

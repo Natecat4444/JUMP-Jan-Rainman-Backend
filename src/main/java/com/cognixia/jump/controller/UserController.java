@@ -92,7 +92,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/users")
-	public ResponseEntity<?> updateCustomer(@Valid @RequestBody User user) throws ResourceNotFoundException{
+	public ResponseEntity<?> updateUser(@Valid @RequestBody User user) throws ResourceNotFoundException{
 		
 		if( serv.findUserByUsername(user.getUsername()) != null){
 			User updated = serv.updateUser(user);
