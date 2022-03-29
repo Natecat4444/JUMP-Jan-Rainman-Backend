@@ -160,6 +160,13 @@ public class Bet {
 	public void setCity(City city) {
 		this.city = city;
 	}
+
+	@Override
+	public String toString() {
+		return "Bet [bet_id=" + bet_id + ", temperature=" + temperature + ", forecast_date=" + forecast_date
+				+ ", status=" + status + ", wager=" + wager + ", creation_date=" + creation_date + ", user=" + user
+				+ ", city=" + city + "]";
+	}
 	
 	
 	
