@@ -1,9 +1,12 @@
 package com.cognixia.jump.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,5 +22,14 @@ public class CityController {
 	@GetMapping("/cities")
 	public List<City> getAllCities(){
 		return repo.findAll();
+	}
+	
+	@GetMapping("/city/{id}")
+	public ResponseEntity<?> getCity(@PathVariable int id){
+		Optional<City> found = repo.findById(id);
+		if(found.isEmpty()) {
+			return ResponseEntity.status(404).body("Not found");
+		}
+		return ResponseEntity.status(200).body(found.get());
 	}
 }
