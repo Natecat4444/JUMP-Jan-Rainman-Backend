@@ -8,8 +8,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +39,19 @@ public class BetController {
 		return betserv.findBetByUserId(user.getUserID());
 	}
 	
+	@GetMapping("/bets/{id}")
+	public ResponseEntity<Bet> findBetById(@Valid @PathVariable int id)throws ResourceNotFoundException{
+
+		Bet bet = betserv.findBetById(id);
+		if(bet != null) {
+			 return ResponseEntity.status(201).body(bet);
+		}
+		
+		throw new ResourceNotFoundException("No bet with that Id found");
+	
+	}
+	
+	
 	@PostMapping("/bets")
 	public ResponseEntity<Bet> createBet(@Valid @RequestBody Bet bet, Principal principal) throws ResourceNotFoundException{
 		
@@ -54,6 +70,29 @@ public class BetController {
 		
 		throw new ResourceNotFoundException("user dont have enough wager");
 	}
+	
+	
+	@PutMapping("/bets")
+	public ResponseEntity<?> editBet(@Valid @RequestBody Bet bet) throws ResourceNotFoundException{
+		
+		if( betserv.findBetById(bet.getBet_id()) != null) {
+			Bet updated =betserv.updateBet(bet);
+			return ResponseEntity.status(200).body(updated);
+		}
+		
+		throw new ResourceNotFoundException("user with id: "+ bet.getBet_id()+ " was not found");		
+	}
+	
+	@DeleteMapping("/bets/{id}")
+	public ResponseEntity<?> deleteBet(@PathVariable int id){
+		if(betserv.deleteBet(id)) {
+			return ResponseEntity.status(200).body("bet with id: "+ id + " was deleted");
+		}
+		return ResponseEntity.status(400).body("id not found");
+	}
+	
+	
+	
 	
 
 }
