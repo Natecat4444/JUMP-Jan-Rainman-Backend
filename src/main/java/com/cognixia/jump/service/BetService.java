@@ -22,8 +22,9 @@ public class BetService {
 		return betrepo.findAllByUserId(id);
 	}
 	
-	public Bet findBetById(int id) {
-		return betrepo.getById(id);
+	public Bet findBetById(Integer id) {
+		return betrepo.findById(id).get();
+		
 	}
 	
 	public List<Bet> findCompletedBets(int id){

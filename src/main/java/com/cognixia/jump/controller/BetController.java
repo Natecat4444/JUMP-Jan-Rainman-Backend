@@ -33,6 +33,12 @@ public class BetController {
 	@Autowired
 	UserService userserv;
 	
+	/**
+	 * method to get list of all bets of user
+	 * using user_id
+	 * @param principal to get user name
+	 * @return List of bets 
+	 */
 	@GetMapping("/bets")
 	public List<Bet> getAllUserBets(Principal principal){
 		User user = userserv.findUserByUsername(principal.getName());
@@ -45,7 +51,7 @@ public class BetController {
 	}
 	
 	@GetMapping("/bets/{id}")
-	public ResponseEntity<Bet> findBetById(@Valid @PathVariable int id)throws ResourceNotFoundException{
+	public ResponseEntity<Bet> findBetById(@Valid @PathVariable Integer id)throws ResourceNotFoundException{
 
 		Bet bet = betserv.findBetById(id);
 		if(bet != null) {
@@ -57,18 +63,35 @@ public class BetController {
 	}
 	
 	
+	/**
+	 * get all pending bets of user
+	 * @param principal
+	 * @return List of pending bets
+	 */
 	@GetMapping("/bets/pending")
 	public List<Bet> getAllPendingBets(Principal principal){
 		User user = userserv.findUserByUsername(principal.getName());
 		return betserv.findPendingBets(user.getUserID());
 	}
 	
+	/**
+	 * get all completed bets of user
+	 * @param principal
+	 * @return List of completed bets
+	 */
 	@GetMapping("/bets/completed")
 	public List<Bet> getAllCompletedBets(Principal principal){
 		User user = userserv.findUserByUsername(principal.getName());
 		return betserv.findCompletedBets(user.getUserID());
 	}
 	
+	/**
+	 * creating a bet if the wager is less than credit available
+	 * @param bet
+	 * @param principal
+	 * @return ResponseEntity with status, Bet
+	 * @throws ResourceNotFoundException
+	 */
 	@PostMapping("/bets")
 	public ResponseEntity<Bet> createBet(@Valid @RequestBody Bet bet, Principal principal) throws ResourceNotFoundException{
 		
