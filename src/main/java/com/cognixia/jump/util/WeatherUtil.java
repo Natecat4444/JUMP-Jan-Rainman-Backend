@@ -66,7 +66,7 @@ public class WeatherUtil {
 	 */
 	@Scheduled(cron ="0 0 12 * * *")
 	public void betScheduler() { //THIS IS A BAD IMPLEMENTATION PLEASE FIX ME
-		List<Bet> betList = betserv.findAllBet();
+		List<Bet> betList = betserv.getSortedBetByForecast();
 
 		for(Bet x : betList) {
 		 LocalDate betDate = x.getForecast_date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

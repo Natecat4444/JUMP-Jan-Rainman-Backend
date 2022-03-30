@@ -1,0 +1,9 @@
+com.cognixia.jump
+com.cognixia.jump.config
+com.cognixia.jump.controller
+com.cognixia.jump.exception
+com.cognixia.jump.filter
+com.cognixia.jump.model
+com.cognixia.jump.repository
+com.cognixia.jump.service
+com.cognixia.jump.util

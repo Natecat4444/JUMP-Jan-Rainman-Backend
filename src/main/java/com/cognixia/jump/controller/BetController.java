@@ -22,6 +22,7 @@ import com.cognixia.jump.model.Bet;
 import com.cognixia.jump.model.User;
 import com.cognixia.jump.service.BetService;
 import com.cognixia.jump.service.UserService;
+import com.cognixia.jump.util.WeatherUtil;
 
 @RequestMapping("/api")
 @RestController
@@ -32,6 +33,8 @@ public class BetController {
 	
 	@Autowired
 	UserService userserv;
+	@Autowired
+	WeatherUtil weatherutil;
 	
 	/**
 	 * method to get list of all bets of user
@@ -83,6 +86,17 @@ public class BetController {
 	public List<Bet> getAllCompletedBets(Principal principal){
 		User user = userserv.findUserByUsername(principal.getName());
 		return betserv.findCompletedBets(user.getUserID());
+	}
+	
+	
+	/**
+	 * force a evaluation of pending Bets all completed bets of user
+	 * 
+	 * 
+	 */
+	@GetMapping("/bets/update")
+	public void forceBetUpdate(){
+		weatherutil.betQueueManager();
 	}
 	
 	/**
