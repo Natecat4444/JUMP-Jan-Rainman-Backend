@@ -57,6 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.antMatchers( HttpMethod.POST, "/api/bets").hasAnyRole("USER","ADMIN")
 			.antMatchers( HttpMethod.GET, "/api/users").hasRole("ADMIN")
 			.antMatchers( HttpMethod.PUT, "/api/bets").hasRole("ADMIN")
+			.antMatchers( HttpMethod.GET, "/api/bets/update").hasRole("ADMIN")
 			.antMatchers( HttpMethod.GET, "/api/admin/**").hasRole("ADMIN")
 			.antMatchers( HttpMethod.DELETE, "/api/bets/**").hasRole("ADMIN")
 			.antMatchers("/api/authenticate").permitAll() // permit anyone to create a token as long as they are valid users
