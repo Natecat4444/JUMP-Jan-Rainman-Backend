@@ -21,6 +21,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.cognixia.jump.service.BetService;
 import com.cognixia.jump.service.UserService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -50,6 +51,7 @@ public class Bet {
 			example = "01-13-2023", 
 			required = true)
 	@NotNull(message = "date can't be null")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date forecast_date;
 	
 	@Schema(description = "staus of the bet",
@@ -66,6 +68,7 @@ public class Bet {
 	
 	@Column(updatable = false)
 	@CreationTimestamp
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDateTime creation_date;
 	
 	@ManyToOne
