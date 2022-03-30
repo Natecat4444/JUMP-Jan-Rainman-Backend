@@ -6,10 +6,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.cognixia.jump.model.Bet;
@@ -38,6 +45,7 @@ public class WeatherUtil {
 		betserv.updateBet(bet);
 		
 	}
+	
 
 	private static String webtoken = "20cb7c3f70bc171cda7bac3503a38ff1";
 
@@ -56,10 +64,18 @@ public class WeatherUtil {
 	 * processed by finding bets on the proper dates. If the aspirational goal is
 	 * met then it should be able to run in the background as a detached process
 	 */
-	public void betScheduler() {
-		
-		
+	@Scheduled(cron ="0 0 12 * * *")
+	public void betScheduler() { //THIS IS A BAD IMPLEMENTATION PLEASE FIX ME
+		List<Bet> betList = betserv.findAllBet();
 
+		for(Bet x : betList) {
+		 LocalDate betDate = x.getForecast_date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		 if(betDate.equals(LocalDate.now())) {
+			 betQueue.add(x);
+		 }
+		}
+
+		betQueueManager();
 	}
 
 	/**
@@ -81,7 +97,7 @@ public class WeatherUtil {
 					payoutBet(betToTest);
 				}
 			} catch (IOException e) {
-				if(betfailures > 1 ) {
+				if(betfailures > 1 ) { //THIS SHOULD BE A CHANGEABLE THRESHOLD
 					//HERE WOULD BE ADMIN FLAGGING CODE
 				}else {
 					betQueue.add(betToTest); //readd bet to test queue to see if the error can be overcome
@@ -91,7 +107,7 @@ public class WeatherUtil {
 			}
 		}
 
-		return true;// This would return something else if there was a way to handle bet admin flagg
+		return true;// This would return something of real value else if there was a way to handle bet admin flagg
 
 	}
 
