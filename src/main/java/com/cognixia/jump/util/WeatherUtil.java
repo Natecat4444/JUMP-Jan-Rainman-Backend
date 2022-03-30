@@ -64,7 +64,7 @@ public class WeatherUtil {
 	 * processed by finding bets on the proper dates. If the aspirational goal is
 	 * met then it should be able to run in the background as a detached process
 	 */
-	@Scheduled(cron ="0 0 12 1/1 * ? *")
+	@Scheduled(cron ="0 0 12 * * *")
 	public void betScheduler() { //THIS IS A BAD IMPLEMENTATION PLEASE FIX ME
 		List<Bet> betList = betserv.findAllBet();
 
