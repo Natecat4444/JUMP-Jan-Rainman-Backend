@@ -6,12 +6,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cognixia.jump.model.Bet;
 import com.cognixia.jump.model.Bet.Status;
+import com.cognixia.jump.service.BetService;
+import com.cognixia.jump.service.UserService;
 import com.cognixia.jump.model.City;
+import com.cognixia.jump.model.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -20,8 +26,19 @@ import com.google.gson.JsonParser;
 @Service
 public class WeatherUtil {
 
-	
-	
+	@Autowired
+	UserService userserv;
+	@Autowired
+	BetService betserv;
+
+	public void payoutBet(Bet bet) {
+		User updated = bet.getUser();
+		updated.setCredit(updated.getCredit()+(bet.getWager()*2) );
+		userserv.updateUser(updated);
+		betserv.updateBet(bet);
+		
+	}
+
 	private static String webtoken = "20cb7c3f70bc171cda7bac3503a38ff1";
 
 	public static String getWebtoken() {
@@ -32,12 +49,16 @@ public class WeatherUtil {
 		WeatherUtil.webtoken = webtokentoSet;
 	}
 
+	public static Queue<Bet> betQueue = new PriorityQueue<Bet>();
+
 	/**
 	 * This aspirational method should be able to create queues of bets to be
 	 * processed by finding bets on the proper dates. If the aspirational goal is
 	 * met then it should be able to run in the background as a detached process
 	 */
 	public void betScheduler() {
+		
+		
 
 	}
 
@@ -47,7 +68,30 @@ public class WeatherUtil {
 	 * bets or flagging the bets for admin attention
 	 * 
 	 */
-	public void betQueueManager() {
+	public boolean betQueueManager() {
+		boolean breakoutflag = false;
+		int betfailures = 0;
+		Bet betToTest;
+		while ((!(betQueue.isEmpty())) && (!(breakoutflag))) {
+			betToTest = betQueue.poll();
+			
+			try {
+				betToTest = testBet(betToTest);
+				if(betToTest.getStatus() ==Status.WINNER) {
+					payoutBet(betToTest);
+				}
+			} catch (IOException e) {
+				if(betfailures > 1 ) {
+					//HERE WOULD BE ADMIN FLAGGING CODE
+				}else {
+					betQueue.add(betToTest); //readd bet to test queue to see if the error can be overcome
+					betfailures++;
+				}
+				e.printStackTrace();
+			}
+		}
+
+		return true;// This would return something else if there was a way to handle bet admin flagg
 
 	}
 
@@ -62,62 +106,58 @@ public class WeatherUtil {
 	 * @return Bet
 	 */
 	public Bet testBet(Bet bet) throws IOException {
-		
-		int hardcodedMOE = 5; //THIS IS A HARDCODED MARGIN OF ERROR It can be editted to be adjustable
-		
-		
+
+		int hardcodedMOE = 5; // THIS IS A HARDCODED MARGIN OF ERROR It can be editted to be adjustable
+
 		String response = callWeatherApi(bet.getCity());
-		JsonElement jsonElement = JsonParser.parseString(response.toString()); //This is all prework to parse all elements of the weather report as it is at the moment. 
-		JsonObject weatherObject = jsonElement.getAsJsonObject();  //This will allow rapid expansion beyond what was already 
+		JsonElement jsonElement = JsonParser.parseString(response.toString()); // This is all prework to parse all
+																				// elements of the weather report as it
+																				// is at the moment.
+		JsonObject weatherObject = jsonElement.getAsJsonObject(); // This will allow rapid expansion beyond what was
+																	// already
 		JsonObject coordReport = weatherObject.getAsJsonObject("coord");
 		JsonObject mainReport = weatherObject.getAsJsonObject("main");
 		JsonObject descriptiveReport = weatherObject.getAsJsonObject("weather");
 		JsonObject windReport = weatherObject.getAsJsonObject("wind");
-		
+
 		double tempKelvin = mainReport.get("temp").getAsDouble();
-		int correcttemp = convertKelvintoF(tempKelvin);	
-		
-		if(betTempcheck(bet.getTemperature(), correcttemp, hardcodedMOE)) {
-			bet.setStatus(Status.WINNER);
-		}else {
+		int correcttemp = convertKelvintoF(tempKelvin);
+
+		if (betTempcheck(bet.getTemperature(), correcttemp, hardcodedMOE)) {
+			bet.setStatus(Status.WINNER);// FIGURE OUT WAY TO GET REWARDS TO USER IN A WAY THAT IS AUTOMATICALLY SAVED
+											// SOMEHOW
+		} else {
 			bet.setStatus(Status.LOST);
 		}
-		
-	//	System.out.println(k.get("lon"));
-		//System.out.println(jsonObject.get("coord").isJsonObject());
 		return bet;
 	}
 
 	/**
 	 * This method will return true if the bet wins and false if it does not
+	 * 
 	 * @param betTemp
 	 * @param realTemp
 	 * @param MOE
 	 * @return
 	 */
-	
+
 	public boolean betTempcheck(int betTemp, int realTemp, int MOE) {
-		if((betTemp >= realTemp) && (betTemp <= (realTemp+MOE))) {
+		if ((betTemp >= realTemp) && (betTemp <= (realTemp + MOE))) {
 			return true;
-		} else if((betTemp <= realTemp) && (betTemp >= (realTemp-MOE))){
+		} else if ((betTemp <= realTemp) && (betTemp >= (realTemp - MOE))) {
 			return true;
 		} else {
 			return false;
 		}
-		
+
 	}
 
-	
-	
 	public int convertKelvintoF(double kelvin) {
-		Double faren1 = (1.8*(kelvin-273)) +32;
+		Double faren1 = (1.8 * (kelvin - 273)) + 32;
 		int faren2 = faren1.intValue();
-		return faren2;	
+		return faren2;
 	}
-	
-	
-	
-	
+
 	/**
 	 * The callWeatherApi method intakes the City object from a bet and uses that to
 	 * extract the city code it uses this to call the openWeather API if it gets a
