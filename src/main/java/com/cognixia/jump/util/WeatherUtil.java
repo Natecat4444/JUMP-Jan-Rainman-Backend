@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -46,6 +47,11 @@ public class WeatherUtil {
 		
 	}
 	
+	public void lostBet(Bet bet) {
+
+		betserv.updateBet(bet);
+		
+	}
 
 	private static String webtoken = "20cb7c3f70bc171cda7bac3503a38ff1";
 
@@ -56,9 +62,9 @@ public class WeatherUtil {
 	public static void setWebtoken(String webtokentoSet) {
 		WeatherUtil.webtoken = webtokentoSet;
 	}
-
-	public static Queue<Bet> betQueue = new PriorityQueue<Bet>();
-
+	
+	public Queue<Bet> betQueue = new LinkedList<Bet>();;
+	
 	/**
 	 * This aspirational method should be able to create queues of bets to be
 	 * processed by finding bets on the proper dates. If the aspirational goal is
@@ -67,6 +73,8 @@ public class WeatherUtil {
 	@Scheduled(cron ="0 0 12 * * *")
 	public void betScheduler() { //THIS IS A BAD IMPLEMENTATION PLEASE FIX ME
 		List<Bet> betList = betserv.getSortedBetByForecast();
+		System.out.println(betList);
+
 
 		for(Bet x : betList) {
 		 LocalDate betDate = x.getForecast_date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -95,6 +103,8 @@ public class WeatherUtil {
 				betToTest = testBet(betToTest);
 				if(betToTest.getStatus() ==Status.WINNER) {
 					payoutBet(betToTest);
+				}else {
+					lostBet(betToTest);
 				}
 			} catch (IOException e) {
 				if(betfailures > 1 ) { //THIS SHOULD BE A CHANGEABLE THRESHOLD
@@ -131,10 +141,10 @@ public class WeatherUtil {
 																				// is at the moment.
 		JsonObject weatherObject = jsonElement.getAsJsonObject(); // This will allow rapid expansion beyond what was
 																	// already
-		JsonObject coordReport = weatherObject.getAsJsonObject("coord");
+	//	JsonObject coordReport = weatherObject.getAsJsonObject("coord");
 		JsonObject mainReport = weatherObject.getAsJsonObject("main");
-		JsonObject descriptiveReport = weatherObject.getAsJsonObject("weather");
-		JsonObject windReport = weatherObject.getAsJsonObject("wind");
+		//JsonObject descriptiveReport = weatherObject.getAsJsonObject("weather");
+		//JsonObject windReport = weatherObject.getAsJsonObject("wind");
 
 		double tempKelvin = mainReport.get("temp").getAsDouble();
 		int correcttemp = convertKelvintoF(tempKelvin);
