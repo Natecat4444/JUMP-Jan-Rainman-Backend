@@ -20,4 +20,6 @@ public interface BetRepository extends JpaRepository<Bet, Integer> {
 	@Query("select b from Bet b where status = 'PENDING' and user_id = ?1 ")
 	public List<Bet> findAllPendingBetsByUserId(Integer user_id);
 	
+	@Query("select b from Bet b where status = 'PENDING' order by forecast_date desc")
+	public List<Bet> findBetSortedByForecastDate();
 }

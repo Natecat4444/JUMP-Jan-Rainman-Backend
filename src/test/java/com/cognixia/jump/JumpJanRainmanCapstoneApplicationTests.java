@@ -30,10 +30,10 @@ class JumpJanRainmanCapstoneApplicationTests {
 	@Test
 	void shouldFindBetsByUserId() {
 		
-		int size = 1;
+		int size = 5;
 		List<Bet> userbets = betserv.findBetByUserId(1);
 		
 		assertEquals(size, userbets.size());
 	}
-
+	
 }
