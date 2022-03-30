@@ -88,7 +88,7 @@ public class UserController {
 		return serv.getAllUsers();
 	}
 	
-<<<<<<< HEAD
+
 	@GetMapping("/user")
 	public ResponseEntity<?> getCurrentUser(Principal principle){
 		User user =  serv.findUserByUsername(principle.getName());	
@@ -106,13 +106,12 @@ public class UserController {
 		return ResponseEntity.status(200).body(user);
 		
 	}
-=======
+
 	/**
 	 * method to add a user 
 	 * @param user
 	 * @return ResponseEntiy with status of 201 and user object
 	 */
->>>>>>> origin/pasangbranch
 	@PostMapping("/users")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user){
 		
