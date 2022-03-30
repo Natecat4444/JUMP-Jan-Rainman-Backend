@@ -51,7 +51,7 @@ public class BetController {
 	}
 	
 	@GetMapping("/bets/{id}")
-	public ResponseEntity<Bet> findBetById(@Valid @PathVariable int id)throws ResourceNotFoundException{
+	public ResponseEntity<Bet> findBetById(@Valid @PathVariable Integer id)throws ResourceNotFoundException{
 
 		Bet bet = betserv.findBetById(id);
 		if(bet != null) {
