@@ -51,5 +51,9 @@ public class BetService {
 		return false;
 	}
 	
+	public List<Bet> getSortedBetByForecast(){
+		return betrepo.findBetSortedByForecastDate();
+	}
+	
 	
 }
