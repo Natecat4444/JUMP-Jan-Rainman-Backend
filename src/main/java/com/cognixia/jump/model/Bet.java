@@ -19,6 +19,9 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.cognixia.jump.service.BetService;
+import com.cognixia.jump.service.UserService;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
@@ -96,6 +99,9 @@ public class Bet {
 		this.user = user;
 		this.city = city;
 	}
+	
+
+	
 
 	public Integer getBet_id() {
 		return bet_id;
