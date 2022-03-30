@@ -13,27 +13,22 @@ import com.cognixia.jump.service.BetService;
 
 @SpringBootTest
 class JumpJanRainmanCapstoneApplicationTests {
-	
+
 	@Autowired
 	private BetService betserv;
 
 	@Test
 	void contextLoads() {
 	}
-	
-	/**
-	 * unit test for the custom query 
-	 * get bets attached to the user_id only
+	/*
+	 * /** unit test for the custom query get bets attached to the user_id only
 	 * 
 	 * checks if the size of the array matches the one in the database
+	 * 
+	 * @Test void shouldFindBetsByUserId() {
+	 * 
+	 * int size = 5; List<Bet> userbets = betserv.findBetByUserId(1);
+	 * 
+	 * assertEquals(size, userbets.size()); }
 	 */
-	@Test
-	void shouldFindBetsByUserId() {
-		
-		int size = 5;
-		List<Bet> userbets = betserv.findBetByUserId(1);
-		
-		assertEquals(size, userbets.size());
-	}
-	
 }

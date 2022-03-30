@@ -94,7 +94,7 @@ public class BetController {
 	 * 
 	 * 
 	 */
-	@GetMapping("/bets/update")
+	@PutMapping("/bets/update")
 	public void forceBetUpdate(){
 		weatherutil.betQueueManager();
 	}
