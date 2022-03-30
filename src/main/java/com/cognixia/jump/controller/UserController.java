@@ -51,8 +51,14 @@ public class UserController {
 	@Autowired
 	JwtUtil jwtUtil;
 	
-	// a user will pass their credentials and get back a JWT
-	// Once JWT is given to a user , can use JWT for every other request, no need to provide credentials anymore
+	/**
+	 * a user will pass their credentials and get back a JWT
+	 *  Once JWT is given to a user , can use JWT for every other request, 
+	 *  no need to provide credentials anymore
+	 * @param request
+	 * @return jwt with status
+	 * @throws Exception
+	 */
 	@PostMapping("/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest request) throws Exception {
 		
@@ -82,6 +88,7 @@ public class UserController {
 		return serv.getAllUsers();
 	}
 	
+<<<<<<< HEAD
 	@GetMapping("/user")
 	public ResponseEntity<?> getCurrentUser(Principal principle){
 		User user =  serv.findUserByUsername(principle.getName());	
@@ -99,6 +106,13 @@ public class UserController {
 		return ResponseEntity.status(200).body(user);
 		
 	}
+=======
+	/**
+	 * method to add a user 
+	 * @param user
+	 * @return ResponseEntiy with status of 201 and user object
+	 */
+>>>>>>> origin/pasangbranch
 	@PostMapping("/users")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user){
 		
@@ -111,6 +125,14 @@ public class UserController {
 		return ResponseEntity.status(201).body(created);
 	}
 	
+	/**
+	 * 
+	 * Method to update user
+	 * checks if user exist before update
+	 * @param user
+	 * @return ResponseEntiy or Exception
+	 * @throws ResourceNotFoundException
+	 */
 	@PutMapping("/users")
 	public ResponseEntity<?> updateUser(@Valid @RequestBody User user) throws ResourceNotFoundException{
 		
@@ -122,6 +144,11 @@ public class UserController {
 		throw new ResourceNotFoundException("user with id: "+ user.getUserID()+ " was not found");
 	}
 	
+	/**
+	 * Method to remove user by the user_id
+	 * @param id
+	 * @return ResponseEntity with the status and the message body
+	 */
 	@DeleteMapping("/users/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable int id) {
 		if(serv.deleteUser(id) ) {
