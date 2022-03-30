@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Entity
 public class Bet {
 	
-	private static enum Status{
+	public static enum Status{
 		WINNER, LOST, PENDING	}
 	
 	@Id
